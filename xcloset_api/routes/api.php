@@ -27,3 +27,6 @@ Route::post('users/upload',[UsersController::class,'upload']);
 
 //[PUT method] Cập nhật lại thông tin cho user theo ID ( Update )
 Route::put('users/edit/{id}',[UsersController::class,'edit']);
+
+//[Delete method] Xóa user theo ID ( Update )
+Route::delete('users/delete/{id}',[UsersController::class,'delete']);

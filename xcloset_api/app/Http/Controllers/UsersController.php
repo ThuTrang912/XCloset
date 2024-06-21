@@ -59,7 +59,7 @@ class UsersController extends Controller
 
             $data=[
                 'status'=>200,
-                'message'=>'Data Uploaded Successfully :))',
+                'message'=>'Data Uploaded Successfully ($_$)',
             ];
 
             return response()->json($data,200);
@@ -119,6 +119,24 @@ class UsersController extends Controller
 
 
         }
+
+    }
+
+    //[DELETE] DELETE người dùng theo id
+    public function delete($id){
+
+        $users=User::find($id);
+
+        $users->delete();
+
+        $data=
+        [
+            'status'=>200,
+            'message'=>'data deleted successfully (>_<)'
+        ];
+
+        return response()->json($data,200);
+
 
     }
 }
