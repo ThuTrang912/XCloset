@@ -23,4 +23,4 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::get('users',[UsersController::class,'index']);
 
 //[Post method] Lấy Thông tin của users
-Route::post('users',[UsersController::class,'upload']);
+Route::post('users/upload_users',[UsersController::class,'upload']);
