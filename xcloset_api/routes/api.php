@@ -22,5 +22,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //[Get method] Lấy Thông tin của users
 Route::get('users',[UsersController::class,'index']);
 
-//[Post method] Lấy Thông tin của users
-Route::post('users/upload_users',[UsersController::class,'upload']);
+//[Post method] Thêm Thông tin của users mới ( Insert )
+Route::post('users/upload',[UsersController::class,'upload']);
+
+//[PUT method] Cập nhật lại thông tin cho user theo ID ( Update )
+Route::put('users/edit/{id}',[UsersController::class,'edit']);
