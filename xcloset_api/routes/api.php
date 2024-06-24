@@ -21,8 +21,11 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 //------------------------USERS-----------------------------
-//[Get method] Lấy Thông tin của users
+//[Get method] Lấy tất cả thông tin của users
 Route::get('users',[UsersController::class,'index']);
+
+//[Get method] Lấy Thông tin của users theo id
+Route::get('users/get_user_by_id/{id}',[UsersController::class,'get_user_by_id']);
 
 //[Post method] Thêm Thông tin của users mới ( Insert )
 Route::post('users/upload',[UsersController::class,'upload']);
@@ -43,7 +46,7 @@ Route::delete('users/delete/{id}',[UsersController::class,'delete']);
 
 //-------------------------ITEMS----------------------------
 
-Route::get('items/{id}',[ItemsController::class,'index']);
+Route::get('items',[ItemsController::class,'index']);
 
 
 

@@ -8,7 +8,7 @@ use Validator;
 
 class UsersController extends Controller
 {
-    //[GET] Hiển thị thông tin người dùng
+    //[GET] Hiển thị tất cả thông tin người dùng
     public function index(){
         $users = User::all();
         $data = [
@@ -16,6 +16,24 @@ class UsersController extends Controller
             'users' => $users,
         ];
         return response()->json($data,200);
+    }
+    //[GET] Hiển thông tin người dùng theo id
+    public function get_user_by_id($id){
+        $user = User::find($id);
+
+        if ($user) {
+            $data = [
+                'status' => 200,
+                'item' => $user
+            ];
+        } else {
+            $data = [
+                'status' => 404,
+                'message' => 'User not found'
+            ];
+        }
+
+        return response()->json($data, $data['status']);
     }
 
     //[POST] Insert thông tin người dùng
