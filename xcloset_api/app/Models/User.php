@@ -48,4 +48,17 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed', // Chỉ định kiểu dữ liệu của trường password là hashed
     ];
+
+    //Relationship
+    /*
+        -Bản ghi trong mô hình hiện tại
+        có thể liên kết với nhiều bản ghi
+        trong mô hình khác.
+        -Nói cách khác, mô hình hiện tại "có nhiều" mô hình khác.
+    */
+    public function closets()
+    {
+        return $this->hasMany(Closet::class);
+    }
+
 }

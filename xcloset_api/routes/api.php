@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\ItemsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,6 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+//------------------------USERS-----------------------------
 //[Get method] Lấy Thông tin của users
 Route::get('users',[UsersController::class,'index']);
 
@@ -30,3 +32,19 @@ Route::put('users/edit/{id}',[UsersController::class,'edit']);
 
 //[Delete method] Xóa user theo ID ( Update )
 Route::delete('users/delete/{id}',[UsersController::class,'delete']);
+//------------------------USERS-----------------------------
+
+//-------------------------DRAWERS----------------------------
+
+
+
+
+//-------------------------DRAWERS----------------------------
+
+//-------------------------ITEMS----------------------------
+
+Route::get('items/{id}',[ItemsController::class,'index']);
+
+
+
+//-------------------------ITEMS----------------------------
