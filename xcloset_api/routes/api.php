@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\ItemsController;
+use App\Http\Controllers\ClosetsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,6 +37,14 @@ Route::put('users/edit/{id}',[UsersController::class,'edit']);
 //[Delete method] Xóa user theo ID ( Update )
 Route::delete('users/delete/{id}',[UsersController::class,'delete']);
 //------------------------USERS-----------------------------
+
+//-------------------------CLOSETS----------------------------
+//[Post method] Thêm Thông tin cho Closet mới ( Insert )
+Route::post('closets/upload',[ClosetsController::class,'upload']);
+
+
+
+//-------------------------CLOSETS----------------------------
 
 
 //-------------------------DRAWERS----------------------------
