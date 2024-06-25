@@ -21,13 +21,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 //------------------------USERS-----------------------------
-//[Get method] Lấy tất cả thông tin của users
+//[Get method] Lấy tất cả thông tin của users có trong database
 Route::get('users',[UsersController::class,'index']);
 
 //[Get method] Lấy Thông tin của users theo id
 Route::get('user/{id}',[UsersController::class,'get_user_by_id']);
 
-//[Post method] Thêm Thông tin của users mới ( Insert )
+//[Post method] Thêm Thông tin cho users mới ( Insert )
 Route::post('users/upload',[UsersController::class,'upload']);
 
 //[PUT method] Cập nhật lại thông tin cho user theo ID ( Update )
@@ -46,14 +46,16 @@ Route::delete('users/delete/{id}',[UsersController::class,'delete']);
 //-------------------------DRAWERS----------------------------
 
 //-------------------------ITEMS----------------------------
-//[Get method] Lấy tất cả thông tin của items
+//[Get method] Hiện thị tất cả thông tin của items có trong database
 Route::get('items',[ItemsController::class,'index']);
 
-//[Get method] Lấy Thông tin của users theo id
-Route::get('item/{user_id}/{closet_id}/{drawer_id}', [ItemsController::class, 'get_item_by_details']);
+//[Get method] Hiện thị thông tin items của user cụ thể
+Route::get('item/{user_id}/{closet_id}/{drawer_id}/{id}', [ItemsController::class, 'get_item_by_details']);
 
+//[Get method] Hiện thị thông tin items thông qua id
+Route::get('item/{id}', [ItemsController::class, 'get_item_by_id']);
 
-//[Post method] Thêm Thông tin của items mới ( Insert )
+//[Post method] Thêm Thông tin items mới ( Insert )
 Route::post('items/upload',[ItemsController::class,'upload']);
 
 

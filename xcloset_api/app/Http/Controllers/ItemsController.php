@@ -22,8 +22,8 @@ class ItemsController extends Controller
 
     }
 
-    //[GET] Hiển thông tin item theo details
-    public function get_item_by_details($user_id, $closet_id, $drawer_id) {
+    //[GET] Hiển thị tất cả thông tin item theo details [ user_id, closet_id, drawer_id]
+    public function get_item_by_details($user_id, $closet_id, $drawer_id,$id) {
         /*
             first() được sử dụng để lấy bản ghi đầu tiên trong kết quả của một truy vấn.
             Cụ thể:
@@ -49,5 +49,27 @@ class ItemsController extends Controller
         }
         return response()->json($data, $data['status']);
     }
+
+    //[GET] Hiển thị tất cả thông tin item theo id cụ thể
+    public function get_item_by_id($id) {
+        // Tìm item theo id
+        $item = Item::find($id);
+        // Hoặc sử dụng: $item = Item::where('id', $id)->first();
+
+        if($item) {
+            $data = [
+                'status' => 200,
+                'item' => $item,
+            ];
+        } else {
+            $data = [
+                'status' => 404,
+                'message' => 'Item Not Found'
+            ];
+        }
+        return response()->json($data, $data['status']);
+    }
+
+
 
 }

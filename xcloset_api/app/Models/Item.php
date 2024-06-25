@@ -13,6 +13,7 @@ class Item extends Model
         'item_name',
         'type',
         'closet_id',
+        'user_id',
         'drawer_id',
         'favorite',
     ];
