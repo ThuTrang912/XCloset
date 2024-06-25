@@ -17,19 +17,20 @@ class UsersController extends Controller
         ];
         return response()->json($data,200);
     }
-    //[GET] Hiển thông tin người dùng theo id
+
+    //[GET] Hiển thông tin user theo id
     public function get_user_by_id($id){
         $user = User::find($id);
 
         if ($user) {
             $data = [
                 'status' => 200,
-                'item' => $user
+                'user' => $user
             ];
         } else {
             $data = [
                 'status' => 404,
-                'message' => 'User not found'
+                'message' => 'User Not Found'
             ];
         }
 

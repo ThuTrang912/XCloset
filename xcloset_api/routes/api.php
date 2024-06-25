@@ -52,6 +52,9 @@ Route::get('items',[ItemsController::class,'index']);
 //[Get method] Lấy Thông tin của users theo id
 Route::get('item/{id}',[ItemsController::class,'get_item_by_id']);
 
+//[Post method] Thêm Thông tin của items mới ( Insert )
+Route::post('items/upload',[ItemsController::class,'upload']);
+
 
 
 
