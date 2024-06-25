@@ -37,6 +37,7 @@ Route::put('users/edit/{id}',[UsersController::class,'edit']);
 Route::delete('users/delete/{id}',[UsersController::class,'delete']);
 //------------------------USERS-----------------------------
 
+
 //-------------------------DRAWERS----------------------------
 
 
@@ -45,8 +46,12 @@ Route::delete('users/delete/{id}',[UsersController::class,'delete']);
 //-------------------------DRAWERS----------------------------
 
 //-------------------------ITEMS----------------------------
-
+//[Get method] Lấy tất cả thông tin của items
 Route::get('items',[ItemsController::class,'index']);
+
+//[Get method] Lấy Thông tin của users theo id
+Route::get('item/{id}',[ItemsController::class,'get_item_by_id']);
+
 
 
 

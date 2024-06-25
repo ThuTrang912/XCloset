@@ -7,7 +7,7 @@ use App\Models\Item;
 
 class ItemsController extends Controller
 {
-    //[GET] Hiển thị thông tin của items có trong drawers
+    //[GET] Hiển thị tất cả thông tin của items có trong drawers
     public function index(){
         $items = Item::all();
 
