@@ -50,7 +50,8 @@ Route::delete('users/delete/{id}',[UsersController::class,'delete']);
 Route::get('items',[ItemsController::class,'index']);
 
 //[Get method] Lấy Thông tin của users theo id
-Route::get('item/{id}',[ItemsController::class,'get_item_by_id']);
+Route::get('item/{user_id}/{closet_id}/{drawer_id}', [ItemsController::class, 'get_item_by_details']);
+
 
 //[Post method] Thêm Thông tin của items mới ( Insert )
 Route::post('items/upload',[ItemsController::class,'upload']);

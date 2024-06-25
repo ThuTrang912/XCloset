@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Item extends Model
 {
     use HasFactory;
+    protected $table = 'items'; // Đặt tên bảng là 'drawers'
     protected $fillable = [
         'item_name',
         'type',
@@ -36,5 +37,17 @@ class Item extends Model
     public function drawer()
     {
         return $this->belongsTo(Drawer::class);
+    }
+
+    // Relationship: Item belongs to a User
+    /*
+        -Model Item có một khóa ngoại
+        trỏ đến một bản ghi trong mô hình khác(User).
+        -Nói cách khác, mô hình hiện tại "thuộc về" mô hình khác.
+    */
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
