@@ -1,0 +1,5 @@
+flutter devices
+flutter devices
+
+flutter run -d chrome
+https://pineplanter.moo.jp/non-it-salaryman/2020/07/13/flutter-notavd/

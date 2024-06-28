@@ -1,0 +1,42 @@
+{
+    "closet": {
+        "columns": 10,
+        "rows": [
+            [
+                {"type": "IconButton", "name": "icon1"},
+                {"type": "Card", "name": "card1"},
+                {"type": "IconButton", "name": "icon2"},
+                {"type": "Card", "name": "card2"},
+                {"type": "IconButton", "name": "icon3"}
+            ],
+            [
+                {"type": "IconButton", "name": "icon4"},
+                {"type": "Card", "name": "card3"},
+                {"type": "IconButton", "name": "icon5"},
+                {"type": "Card", "name": "card4"},
+                {"type": "IconButton", "name": "icon6"}
+            ],
+            [
+                {"type": "IconButton", "name": "icon7"},
+                {"type": "Card", "name": "card5"},
+                {"type": "IconButton", "name": "icon8"},
+                {"type": "Card", "name": "card6"},
+                {"type": "IconButton", "name": "icon9"}
+            ],
+            [
+                {"type": "IconButton", "name": "icon10"},
+                {"type": "Card", "name": "card7"},
+                {"type": "IconButton", "name": "icon11"},
+                {"type": "Card", "name": "card8"},
+                {"type": "IconButton", "name": "icon12"}
+            ],
+            [
+                {"type": "IconButton", "name": "icon13"},
+                {"type": "Card", "name": "card9"},
+                {"type": "IconButton", "name": "icon14"},
+                {"type": "Card", "name": "card10"},
+                {"type": "IconButton", "name": "icon15"}
+            ]
+        ]
+    }
+}
