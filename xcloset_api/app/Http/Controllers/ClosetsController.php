@@ -7,9 +7,8 @@ use App\Models\Closet;
 use Validator;
 
 class ClosetsController extends Controller
-{
-    public function upload(Request $request)
-    {
+{   //[POST] Insert Closet
+    public function upload(Request $request){
         $validator = Validator::make($request ->all(),[
             'user_id' => 'required',//yêu cầu đầu vào, tức là không được null
 
@@ -37,14 +36,30 @@ class ClosetsController extends Controller
             return response()->json($data,200);
         }
 
-
-
-
         $closet->save();
 
         return response()->json([
             'message' => 'Closet created successfully!',
-            'closet' => $closet
-        ], 200);
+            'closet' => $closet,
+            ], 200
+        );
     }
+
+    //[Delete] Xóa Closet
+    public function delete($id){
+        $closets=Closet::find($id);
+        $closets->delete();
+
+        $data = [
+            'status' => '200',
+            'message'=>'closet data deleted successfully (>_<)'
+        ];
+
+        return response()->json($data,200);
+
+
+
+
+    }
+
 }
