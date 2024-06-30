@@ -60,6 +60,9 @@ Route::get('drawers/closet_id/{id}',[DrawersController::class,'get_drawers_by_cl
 //[Post method] Thêm Thông tin cho Drawer mới ( Insert )
 Route::post('drawers/upload',[DrawersController::class,'upload']);
 
+//[Put method] Sửa thông tin tin cho Drawer  ( Insert )
+Route::put('drawers/edit/{id}',[DrawersController::class,'edit']);
+
 //[Delete method] Xóa closets theo ID
 Route::delete('drawers/delete/{id}',[DrawersController::class,'delete']);
 
@@ -69,7 +72,7 @@ Route::delete('drawers/delete/{id}',[DrawersController::class,'delete']);
 //[Get method] Hiện thị tất cả thông tin của items có trong database
 Route::get('items',[ItemsController::class,'index']);
 
-//[Get method] Hiện thị thông tin items của user cụ thể
+//[Get method] Hiện thị thông tin items thông qua details
 Route::get('items/{user_id}/{closet_id}/{drawer_id}', [ItemsController::class, 'get_items_by_details']);
 
 //[Get method] Hiện thị thông tin items thông qua id
@@ -78,7 +81,11 @@ Route::get('items/{id}', [ItemsController::class, 'get_items_by_id']);
 //[Post method] Thêm Thông tin items mới ( Insert )
 Route::post('items/upload',[ItemsController::class,'upload']);
 
+//[Put method] Sửa thông tin items  ( Update )
+Route::put('items/edit/{id}',[ItemsController::class,'edit']);
 
+//[Delete method] Xóa items theo ID
+Route::delete('items/delete/{id}',[ItemsController::class,'delete']);
 
 
 //-------------------------ITEMS----------------------------

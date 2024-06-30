@@ -86,6 +86,42 @@ class DrawersController extends Controller
         ], 201);
     }
 
+    // [PUT] Cập nhật thông tin của Drawer
+    public function edit(Request $request, $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'closet_id' => 'required',
+            'drawer_name' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => 422,
+                'message' => $validator->messages(),
+            ], 422);
+        }
+
+        $drawer = Drawer::find($id);
+
+        if (!$drawer) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Drawer Not Found',
+            ], 404);
+        }
+
+        $drawer->closet_id = $request->closet_id;
+        $drawer->drawer_name = $request->drawer_name;
+        $drawer->save();
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Drawer Updated Successfully',
+            'drawer' => $drawer,
+        ], 200);
+    }
+
+
     //[Delete method] Xóa drawers theo ID
     public function delete($id){
         $drawer = Drawer::find($id);
