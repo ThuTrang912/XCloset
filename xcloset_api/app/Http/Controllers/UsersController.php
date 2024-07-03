@@ -19,7 +19,7 @@ class UsersController extends Controller
     }
 
     //[GET] Hiển thông tin user theo id
-    public function get_user_by_id($id){
+    public function get_users_by_id($id){
         $user = User::find($id);
 
         if ($user) {
@@ -30,7 +30,7 @@ class UsersController extends Controller
         } else {
             $data = [
                 'status' => 404,
-                'message' => 'User Not Found'
+                'message' => 'User Not Found',
             ];
         }
 
@@ -143,15 +143,13 @@ class UsersController extends Controller
 
     //[DELETE] DELETE người dùng theo id
     public function delete($id){
-
         $users=User::find($id);
-
         $users->delete();
 
         $data=
         [
             'status'=>200,
-            'message'=>'data deleted successfully (>_<)'
+            'message'=>' User data deleted successfully (>_<)'
         ];
 
         return response()->json($data,200);
