@@ -1,0 +1,30 @@
+Lần này, để chỉnh sửa cài đặt hiển thị trong Visual Studio Code (VS Code), bạn cần mở và chỉnh sửa tệp cấu hình `settings.json`. Đây là cách làm chi tiết:
+
+1. **Mở và chỉnh sửa `settings.json`:**
+   - Mở VS Code.
+   - Nhấn tổ hợp phím `Ctrl + ,` (hoặc truy cập vào `File` > `Preferences` > `Settings`).
+   - Ở góc phải trên cùng của cửa sổ `Settings`, bạn sẽ thấy biểu tượng `{}`. Nhấp vào biểu tượng này để mở tệp `settings.json`.
+
+2. **Thêm cấu hình cho hiển thị lỗi và cảnh báo:**
+   - Trong `settings.json`, bạn có thể thêm các cài đặt sau để điều chỉnh cách hiển thị lỗi và cảnh báo. Ví dụ:
+     ```json
+     {
+         "editor.errorSquiggles": "none",
+         "editor.warningSquiggles": "none"
+     }
+     ```
+     - `"editor.errorSquiggles": "none"`: Loại bỏ các dấu gạch chân lỗi.
+     - `"editor.warningSquiggles": "none"`: Loại bỏ các dấu gạch chân cảnh báo.
+
+3. **Lưu và Khởi động lại VS Code:**
+   - Sau khi thêm hoặc sửa đổi cài đặt trong `settings.json`, bạn hãy lưu tệp.
+   - Đóng và mở lại VS Code để các thay đổi có hiệu lực.
+
+Làm theo các bước này sẽ giúp bạn điều chỉnh cách hiển thị lỗi và cảnh báo trong VS Code theo ý muốn của mình. Nếu bạn có thêm câu hỏi hoặc cần hỗ trợ gì khác, đừng ngần ngại để lại cho tôi biết!
+
+
+
+
+
+
+

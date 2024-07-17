@@ -10,12 +10,14 @@ class Item extends Model
     use HasFactory;
     protected $table = 'items'; // Đặt tên bảng là 'drawers'
     protected $fillable = [
-        'item_name',
+        'id',
         'type',
-        'closet_id',
-        'user_id',
-        'drawer_id',
+        'item_name',
+        'image',
+        'drawer_name',
         'favorite',
+        'drawer_id',
+        'closet_id',
     ];
 
     // Relationship
