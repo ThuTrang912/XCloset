@@ -33,59 +33,58 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> login() async {
-    final url = Uri.parse('http://127.0.0.1:8000/api/users'); // Replace with your API endpoint
+  final url = Uri.parse('http://127.0.0.1:8000/api/login'); // Replace with your API endpoint
 
-    try {
-      final response = await http.get(url);
+  try {
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({"email": email, "password": password}),
+    );
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
 
-      if (response.statusCode == 200) {
-        // Decode the JSON response
-        final jsonData = jsonDecode(response.body);
+    if (response.statusCode == 200) {
+      // Decode the JSON response
+      final jsonData = jsonDecode(response.body);
+      print('JSON Data: $jsonData');
 
-        // Check if the email and password match any user
-        bool loggedIn = false;
-        for (var user in jsonData['users']) {
-          if (user['email'] == email && user['username'] == password) {
-            loggedIn = true;
-            break;
-          }
-        }
-
-        if (loggedIn) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Login successful!'),
-            ),
-          );
-          Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => MyHomePage(), // Replace MyHomePage() with your home page
-            ),
-          );
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Invalid email or password'),
-            ),
-          );
-        }
-      } else {
+      if (jsonData['success']) {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
-            content: Text('Failed to load users'),
+            content: Text('Login successful!'),
+          ),
+        );
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => MyHomePage(), // Replace MyHomePage() with your home page
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(jsonData['message'] ?? 'Invalid email or password'),
           ),
         );
       }
-    } catch (e) {
-      print('Error: $e');
+    } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Error logging in'),
+        SnackBar(
+          content: Text(jsonDecode(response.body)['message'] ?? 'Failed to login'),
         ),
       );
     }
+  } catch (e) {
+    print('Error: $e');
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text('Error logging in'),
+      ),
+    );
   }
+}
+
 
   @override
   Widget build(BuildContext context) {

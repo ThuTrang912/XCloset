@@ -7,6 +7,40 @@ use Validator;
 
 class ItemsController extends Controller
 {
+
+    public function store(Request $request)
+    {
+        // Validate the request
+        $request->validate([
+            'id' => 'required|integer',
+            'drawer_name' => 'required|string|max:30',
+            'item_name' => 'required|string|max:100',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        // Handle file upload
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->extension();
+            $image->move(public_path('images'), $imageName);
+        } else {
+            $imageName = null;
+        }
+
+        // Create a new item
+        $item = new Item();
+        $item->id = $request->input('id');
+        $item->drawer_name = $request->input('drawer_name');
+        $item->item_name = $request->input('item_name');
+        $item->image = $imageName;
+        $item->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Item created successfully',
+            'data' => $item,
+        ]);
+    }
     //[GET] Hiển thị tất cả thông tin của item trong Database
     public function index(){
         $items = Item::all();
@@ -43,7 +77,7 @@ class ItemsController extends Controller
         if($items) {
             $data = [
                 'status' => 200,
-                'item' => $item,
+                'item' => $items,
             ];
         } else {
             $data = [

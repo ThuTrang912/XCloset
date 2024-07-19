@@ -12,15 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('items', function (Blueprint $table) {
-            $table->id();
-            $table->string('item_name',100)->nullable();
-            $table->string('type',30)->nullable();
-
+            $table->string('id')->primary(); // Đặt cột id là chuỗi và khóa chính
+            $table->string('item_name', 100)->nullable();
+            $table->string('image')->nullable();
+            $table->string('type', 30)->nullable();
+            $table->string('drawer_name', 100)->nullable();
             $table->boolean('favorite')->nullable();
-            //FK on drawers.id
-            $table->unsignedBigInteger('drawer_id')->nullable();
-            //FK on drawers.id
-            $table->unsignedBigInteger('closet_id')->nullable();
             $table->timestamps();
         });
     }

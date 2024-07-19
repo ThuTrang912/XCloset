@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use Validator;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
@@ -37,57 +41,29 @@ class UsersController extends Controller
         return response()->json($data, $data['status']);
     }
 
-    //[POST] Insert thông tin người dùng
-    public function upload(Request $request){
-        //$validator giúp kiểm tra giá trị đầu vào
-        //xem có phù hợp không
-        $validator = Validator::make($request->all(),
-        [
-            'role' =>'required',//yêu cầu đầu vào, tức là không được null
-            'name' =>'required',//không được null
-            'email' =>'required|email',//không được null và phải có cấu trúc email
-            'username' =>'required',//không được null
-            'password' =>'required',//không được null
+public function upload(Request $request)
+{
+    $validator = Validator::make($request->all(), [
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users',
+        'password' => 'required|string|min:6|confirmed'
+    ]);
 
-
-
-        ]);
-
-        if($validator->fails()){
-            $data=[
-                'status'=>422,
-                'message'=>$validator->messages()
-
-
-            ];
-
-            return response()->json($data,422);
-
-        }else{
-            //Insert Data vào Model
-            //Chuẩn bị dữ liệu để Insert vào Model
-            $users = new User;//User chính là tên model
-            $users->role=$request->role;
-            $users->name=$request->name;
-            $users->email=$request->email;
-            $users->username=$request->username;
-            $users->password=$request->password;
-
-
-            $users->save();//Lưu (insert) Data và Model
-
-            $data=[
-                'status'=>200,
-                'message'=>'Data Uploaded Successfully ($_$)',
-            ];
-
-            return response()->json($data,200);
-
-
-
-        }
-
+    if ($validator->fails()) {
+        return response()->json(['success' => false, 'message' => $validator->errors()], 422);
     }
+
+    // Hash the password before saving
+    $user = User::create([
+        'name' => $request->name,
+        'email' => $request->email,
+        'password' => Hash::make($request->password),
+    ]);
+
+    return response()->json(['success' => true, 'message' => 'User registered successfully'], 201);
+}
+
+
 
     //[PUT] Update thông tin người dùng
     public function edit(Request $request,$id){
@@ -156,4 +132,43 @@ class UsersController extends Controller
 
 
     }
+
+    public function login(Request $request)
+{
+    try {
+        $credentials = $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required'],
+        ]);
+
+        if (!Auth::attempt($credentials)) {
+            return response()->json([
+                'success' => false,
+                'message' => 'The provided credentials are incorrect.'
+            ], 401);
+        }
+
+        $user = Auth::user();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Login successful',
+            'data' => $user,
+        ]);
+
+    } catch (ValidationException $e) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Validation failed',
+            'errors' => $e->errors()
+        ], 422);
+    } catch (\Exception $e) {
+        Log::error('Login error: ' . $e->getMessage());
+        return response()->json([
+            'success' => false,
+            'message' => 'Server error'
+        ], 500);
+    }
+}
+
 }

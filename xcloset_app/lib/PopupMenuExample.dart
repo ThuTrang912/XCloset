@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:xcloset/AddItemPage.dart'; // Thay đổi đường dẫn tới AddItemPage
 
 class PopupMenuExample extends StatefulWidget {
-  const PopupMenuExample({super.key});
+  const PopupMenuExample({Key? key}) : super(key: key);
 
   @override
   State<PopupMenuExample> createState() => _PopupMenuExampleState();
@@ -23,6 +24,12 @@ class _PopupMenuExampleState extends State<PopupMenuExample> {
       onSelected: (SampleItem item) {
         setState(() {
           selectedItem = item;
+          if (item == SampleItem.itemTwo) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => AddItemPage()),
+            );
+          }
         });
       },
       itemBuilder: (BuildContext context) => <PopupMenuEntry<SampleItem>>[
@@ -31,9 +38,10 @@ class _PopupMenuExampleState extends State<PopupMenuExample> {
           child: Text(
             'All',
             style: TextStyle(
-                fontFamily: 'philosopher',
-                color: Color(0xFF002140),
-                fontSize: 15),
+              fontFamily: 'philosopher',
+              color: Color(0xFF002140),
+              fontSize: 15,
+            ),
           ),
         ),
         const PopupMenuItem<SampleItem>(
@@ -41,9 +49,21 @@ class _PopupMenuExampleState extends State<PopupMenuExample> {
           child: Text(
             'Like',
             style: TextStyle(
-                fontFamily: 'philosopher',
-                color: Color(0xFF002140),
-                fontSize: 15),
+              fontFamily: 'philosopher',
+              color: Color(0xFF002140),
+              fontSize: 15,
+            ),
+          ),
+        ),
+        const PopupMenuItem<SampleItem>(
+          value: SampleItem.itemTwo,
+          child: Text(
+            'Add',
+            style: TextStyle(
+              fontFamily: 'philosopher',
+              color: Color(0xFF002140),
+              fontSize: 15,
+            ),
           ),
         ),
       ],
