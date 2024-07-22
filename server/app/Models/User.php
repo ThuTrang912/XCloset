@@ -57,9 +57,10 @@ class User extends Authenticatable
         trong mô hình khác.
         -Nói cách khác, mô hình hiện tại "có nhiều" mô hình khác.
     */
-    public function closets()
-    {
-        return $this->hasMany(Closet::class);
-    }
+    public function drawers()
+{
+    return $this->hasMany(Drawer::class, 'user_id');
+}
+
 
 }

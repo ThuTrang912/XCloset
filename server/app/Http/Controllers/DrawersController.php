@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Drawer;
+use App\Models\User;
 use Validator;
 
 class DrawersController extends Controller
@@ -21,24 +22,29 @@ class DrawersController extends Controller
     }
 
     //[GET] Hiển thị thông tin của drawer theo id
-    public function get_drawers_by_id($id){
-        $drawers = Drawer::find($id);
-        if ($drawers) {
-            $data = [
-                'status' => 200,
-                'drawer' => $drawers,
-            ];
-        } else {
-            $data = [
-                'status' => 404,
-                'message' => 'Drawer Not Found',
-            ];
-        }
+    public function get_drawers_by_user_id($user_id)
+{
+    // Tìm người dùng theo user_id
+    $user = User::find($user_id);
 
-        return response()->json($data, $data['status']);
+    if ($user) {
+        // Lấy tất cả các drawer thuộc về người dùng
+        $drawers = $user->drawers;
 
-
+        $data = [
+            'status' => 200,
+            'drawers' => $drawers,
+        ];
+    } else {
+        $data = [
+            'status' => 404,
+            'message' => 'User Not Found',
+        ];
     }
+
+    return response()->json($data, $data['status']);
+}
+
 
     //[GET] Hiển thị thông tin của drawer theo closet_id
     public function get_drawers_by_closet_id($id){

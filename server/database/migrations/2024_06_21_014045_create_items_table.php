@@ -19,6 +19,9 @@ return new class extends Migration
             $table->string('drawer_name', 100)->nullable();
             $table->boolean('favorite')->nullable();
             $table->timestamps();
+
+            // Add foreign key constraint
+            $table->foreign('drawer_name')->references('drawer_name')->on('drawers')->onDelete('cascade');
         });
     }
 

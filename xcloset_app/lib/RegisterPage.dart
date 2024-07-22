@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:xcloset/LoginPage.dart';
 import 'package:xcloset/MyHomePage.dart';
 
@@ -45,11 +46,22 @@ class _RegisterPageState extends State<RegisterPage> {
 
     if (response.statusCode == 201) {
       // Đăng ký thành công
+      final jsonData = jsonDecode(response.body);
+      final userData = jsonData['data']; // Điều chỉnh nếu cấu trúc JSON khác
+
+      // Lưu thông tin người dùng
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('user_id', userData['id'].toString());
+      await prefs.setString('user_name', userData['name']);
+      await prefs.setString('user_email', userData['email']);
+      await prefs.setString('user_created_at', userData['created_at']);
+      await prefs.setString('user_updated_at', userData['updated_at']);
+
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Registration successful!')),
       );
       // Chuyển hướng sang MyHomePage
-      Navigator.push(
+      Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => MyHomePage()),
       );
@@ -287,6 +299,15 @@ class _RegisterPageState extends State<RegisterPage> {
                         ],
                       ),
                       const SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => MyHomePage()),
+                          );
+                        },
+                        child: const Text('myhomepage'),
+                      ),
                     ],
                   ),
                 ),

@@ -16,9 +16,9 @@ class Item extends Model
         'image',
         'drawer_name',
         'favorite',
-        'drawer_id',
-        'closet_id',
     ];
+    public $incrementing = false; // Tắt chế độ tự tăng
+    protected $keyType = 'string'; // Loại khóa chính là chuỗi
 
     // Relationship
     /*

@@ -1,8 +1,9 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:xcloset/MyHomePage.dart'; // Replace with your actual home page import
-import 'package:xcloset/RegisterPage.dart'; // Import RegisterPage if needed
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:xcloset/MyHomePage.dart'; // Thay thế với trang chính của bạn
+import 'package:xcloset/RegisterPage.dart'; // Nếu cần, có thể giữ lại hoặc loại bỏ
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -33,58 +34,66 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> login() async {
-  final url = Uri.parse('http://127.0.0.1:8000/api/login'); // Replace with your API endpoint
+    final url = Uri.parse('http://127.0.0.1:8000/api/login'); // Thay đổi endpoint nếu cần
 
-  try {
-    final response = await http.post(
-      url,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({"email": email, "password": password}),
-    );
-    print('Response status: ${response.statusCode}');
-    print('Response body: ${response.body}');
+    try {
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({"email": email, "password": password}),
+      );
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
 
-    if (response.statusCode == 200) {
-      // Decode the JSON response
-      final jsonData = jsonDecode(response.body);
-      print('JSON Data: $jsonData');
+      if (response.statusCode == 200) {
+        // Decode the JSON response
+        final jsonData = jsonDecode(response.body);
+        print('JSON Data: $jsonData');
 
-      if (jsonData['success']) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Login successful!'),
-          ),
-        );
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(
-            builder: (context) => MyHomePage(), // Replace MyHomePage() with your home page
-          ),
-        );
+        if (jsonData['success']) {
+          // Save user data
+          final prefs = await SharedPreferences.getInstance();
+          final userData = jsonData['data'];
+          await prefs.setString('user_id', userData['id'].toString());
+          await prefs.setString('user_name', userData['name']);
+          await prefs.setString('user_email', userData['email']);
+          await prefs.setString('user_created_at', userData['created_at']);
+          await prefs.setString('user_updated_at', userData['updated_at']);
+          
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Login successful!'),
+            ),
+          );
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MyHomePage(), // Thay thế với trang chính của bạn
+            ),
+          );
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(jsonData['message'] ?? 'Invalid email or password'),
+            ),
+          );
+        }
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(jsonData['message'] ?? 'Invalid email or password'),
+            content: Text(jsonDecode(response.body)['message'] ?? 'Failed to login'),
           ),
         );
       }
-    } else {
+    } catch (e) {
+      print('Error: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(jsonDecode(response.body)['message'] ?? 'Failed to login'),
+        const SnackBar(
+          content: Text('Error logging in'),
         ),
       );
     }
-  } catch (e) {
-    print('Error: $e');
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Error logging in'),
-      ),
-    );
   }
-}
-
 
   @override
   Widget build(BuildContext context) {

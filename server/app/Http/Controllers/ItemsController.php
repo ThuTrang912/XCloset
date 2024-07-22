@@ -71,18 +71,18 @@ class ItemsController extends Controller
     }
 
     //[GET] Hiển thị tất cả thông tin item theo id cụ thể
-    public function get_items_by_id($id) {
-        $items = Item::find($id);
+    public function get_items_by_drawer_name($drawer_name) {
+        $items = Item::where('drawer_name', $drawer_name)->get();
 
-        if($items) {
+        if ($items->isNotEmpty()) {
             $data = [
                 'status' => 200,
-                'item' => $items,
+                'items' => $items,
             ];
         } else {
             $data = [
                 'status' => 404,
-                'message' => 'Item Not Found'
+                'message' => 'No items found for the specified drawer name'
             ];
         }
         return response()->json($data, $data['status']);
@@ -90,52 +90,35 @@ class ItemsController extends Controller
 
     //[POST] Insert thông tin items
     public function upload(Request $request){
-        //$validator giúp kiểm tra giá trị đầu vào
-        //xem có phù hợp không
-        $validator = Validator::make($request->all(),
-        [
-            'item_name' =>'required',//yêu cầu đầu vào, tức là không được null
-            'type' =>'required',//không được null
-            'closet_id' =>'required',//không được null
-            'user_id' =>'required',//không được null
-            'drawer_id' =>'required',//không được null
-            'favorite' =>'required',//không được null
-
-
-
+        $validator = Validator::make($request->all(), [
+            'id' => 'required|string',
+            'drawer_name' => 'required|string|max:30',
+            'item_name' => 'required|string|max:100',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        if($validator->fails()){
-            $data=[
-                'status'=>422,
-                'message'=>$validator->messages()
-
-
-            ];
-
-            return response()->json($data,422);
-
-        }else{
-            //Insert Data vào Model
-            //Chuẩn bị dữ liệu để Insert vào Model
-            $items = new Item;//User chính là tên model
-            $items->item_name=$request->item_name;
-            $items->type=$request->type;
-            $items->closet_id=$request->closet_id;
-            $items->user_id=$request->user_id;
-            $items->drawer_id=$request->drawer_id;
-            $items->favorite=$request->favorite;
-
-
-            $items->save();//Lưu (insert) Data và Model
-
-            $data=[
-                'status'=>200,
-                'message'=>'Data Uploaded Successfully ($_$)',
-            ];
-
-            return response()->json($data,200);
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'message' => $validator->errors()], 422);
         }
+
+        // Handle file upload
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '.' . $image->extension();
+            $image->move(public_path('images'), $imageName);
+        } else {
+            $imageName = null;
+        }
+
+        // Hash the password before saving
+        $item = Item::create([
+            'id' => $request->input('id'),
+            'drawer_name' => $request->drawer_name,
+            'item_name' => $request->item_name,
+            'image' => $imageName,
+        ]);
+
+        return response()->json(['success' => true, 'message' => 'Item created successfully', 'data' => $item], 201);
 
     }
 

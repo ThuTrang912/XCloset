@@ -4,11 +4,13 @@ import 'package:xcloset/AllListItemPage.dart';
 class DrawerPage extends StatefulWidget {
   final int keyInt;
   final int keyCol;
+  final String drawerName; // Thêm tham số drawerName
 
   const DrawerPage({
     Key? key,
     required this.keyInt,
     required this.keyCol,
+    required this.drawerName, // Thêm tham số drawerName
   }) : super(key: key);
 
   @override
@@ -22,7 +24,7 @@ class _DrawerPageState extends State<DrawerPage> {
   @override
   void initState() {
     super.initState();
-    cardName = 'DrawerName: ${widget.keyInt}';
+    cardName = widget.drawerName; // Sử dụng drawerName từ widget
   }
 
   @override

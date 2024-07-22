@@ -1,44 +1,49 @@
 import 'package:flutter/material.dart';
-import 'package:xcloset/ClosetPage.dart';
 import 'dart:ui';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+class Item {
+  final String id;
+  final String itemName;
+  final String image;
+  final String type;
+
+  Item({required this.id, required this.itemName, required this.image, required this.type});
+
+  factory Item.fromJson(Map<String, dynamic> json) {
+    return Item(
+      id: json['id'] ?? '',
+      itemName: json['item_name'] ?? 'Unknown',
+      image: 'images/clothes/tshirt.png',
+      type: json['type'] ?? 'Unknown',
+    );
+  }
+}
 
 class AllListItemPage extends StatefulWidget {
   final int keyInt;
   final int keyCol;
   final String cardName;
-  const AllListItemPage(
-      {Key? key,
-      required this.keyCol,
-      required this.keyInt,
-      required this.cardName})
+
+  const AllListItemPage({Key? key, required this.keyCol, required this.keyInt, required this.cardName})
       : super(key: key);
 
   @override
   _AllListItemPageState createState() => _AllListItemPageState();
 }
 
-final List<ItemWidget> allItems = [
-  ItemWidget(title: '1'),
-  ItemWidget(title: '2'),
-  ItemWidget(title: '3'),
-  ItemWidget(title: '4'),
-  ItemWidget(title: '5'),
-  ItemWidget(title: '6'),
-  ItemWidget(title: '7'),
-  ItemWidget(title: '8'),
-  ItemWidget(title: '9'),
-  ItemWidget(title: '10'),
-];
-
 class _AllListItemPageState extends State<AllListItemPage> {
   bool isDark = false;
   bool allLiked = false;
-  List<ItemWidget> filteredItems = allItems;
+  List<ItemWidget> filteredItems = [];
+  late Future<List<Item>> _itemsFuture;
   TextEditingController _searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
+    _itemsFuture = _fetchItems();
     _searchController.addListener(() {
       _filterItems(_searchController.text);
     });
@@ -50,14 +55,39 @@ class _AllListItemPageState extends State<AllListItemPage> {
     super.dispose();
   }
 
-  void _filterItems(String query) {
-    final filtered = allItems.where((item) {
-      return item.title.toLowerCase().contains(query.toLowerCase());
-    }).toList();
+  Future<List<Item>> _fetchItems() async {
+    final response = await http.get(
+      Uri.parse('http://127.0.0.1:8000/api/items/${widget.cardName}'),
+    );
 
-    setState(() {
-      filteredItems = filtered;
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      final items = (data['items'] as List).map((itemJson) => Item.fromJson(itemJson)).toList();
+      return items;
+    } else {
+      throw Exception('Failed to load items');
+    }
+  }
+
+  void _filterItems(String query) {
+    _itemsFuture.then((items) {
+      final filtered = items.where((item) {
+        return item.itemName.toLowerCase().contains(query.toLowerCase());
+      }).toList();
+
+      setState(() {
+        filteredItems = _mapItemsToWidgets(filtered);
+      });
     });
+  }
+
+  List<ItemWidget> _mapItemsToWidgets(List<Item> items) {
+    return items.map((item) => ItemWidget(
+      id: item.id,
+      title: item.itemName,
+      image: item.image,
+      type: item.type,
+    )).toList();
   }
 
   void _toggleAllLikes() {
@@ -91,7 +121,6 @@ class _AllListItemPageState extends State<AllListItemPage> {
               ),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.center,
-                // mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
                     width: MediaQuery.of(context).size.width * 0.75,
@@ -118,16 +147,15 @@ class _AllListItemPageState extends State<AllListItemPage> {
                     ),
                   ),
                   Tooltip(
-                    message: 'change brightness mode',
+                    message: 'Change brightness mode',
                     child: IconButton(
-                      isSelected: isDark,
                       onPressed: () {
                         setState(() {
                           isDark = !isDark;
                         });
                       },
-                      icon: const Icon(Icons.wb_sunny_outlined),
-                      selectedIcon: const Icon(Icons.brightness_2_outlined),
+                      icon: Icon(isDark ? Icons.brightness_2_outlined : Icons.wb_sunny_outlined),
+                      color: Color(0xFFABBFBD),
                     ),
                   ),
                 ],
@@ -145,18 +173,29 @@ class _AllListItemPageState extends State<AllListItemPage> {
                   color: Color(0xFF596A68)),
             ),
             Expanded(
-              child: Padding(
-                padding: EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
-                child: ListView.separated(
-                  itemCount: filteredItems.length,
-                  separatorBuilder: (context, index) => SizedBox(
-                      height:
-                          8.0), // Phân cách giữa các item là SizedBox có chiều cao là 8.0
-                  itemBuilder: (context, index) {
-                    return filteredItems[
-                        index]; // Trả về từng item trong danh sách
-                  },
-                ),
+              child: FutureBuilder<List<Item>>(
+                future: _itemsFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return Center(child: Text('No items found'));
+                  } else {
+                    filteredItems = _mapItemsToWidgets(snapshot.data!);
+                    return Padding(
+                      padding: EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
+                      child: ListView.separated(
+                        itemCount: filteredItems.length,
+                        separatorBuilder: (context, index) => SizedBox(height: 8.0),
+                        itemBuilder: (context, index) {
+                          return filteredItems[index];
+                        },
+                      ),
+                    );
+                  }
+                },
               ),
             ),
           ],
@@ -197,10 +236,13 @@ class _AllListItemPageState extends State<AllListItemPage> {
 }
 
 class ItemWidget extends StatefulWidget {
+  final String id;
   final String title;
-  final GlobalKey<_LikeCheckPageState> likeCheckKey =
-      GlobalKey<_LikeCheckPageState>();
-  ItemWidget({Key? key, required this.title}) : super(key: key);
+  final String image;
+  final String type;
+  final GlobalKey<_LikeCheckPageState> likeCheckKey = GlobalKey<_LikeCheckPageState>();
+
+  ItemWidget({required this.id, required this.title, required this.image, required this.type});
 
   @override
   _ItemWidgetState createState() => _ItemWidgetState();
@@ -214,38 +256,36 @@ class _ItemWidgetState extends State<ItemWidget> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.all(5.0),
-        child: Container(
-          alignment: Alignment.center,
-          width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
-              border: Border(
-                  bottom: BorderSide(color: Color(0xFFABBFBD), width: 1.5))),
-          child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  '${widget.title}',
-                  style: TextStyle(color: Color(0xFF596A68)),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                SizedBox(
-                  width: 30,
-                  height: 30,
-                  child: Image.asset(
-                    'images/clothes/tshirt.png',
-                    width: 25,
-                    height: 25,
-                  ),
-                ),
-                Spacer(),
-                CheckBoxPage(),
-                LikeCheckPage(key: widget.likeCheckKey),
-              ]),
-        ));
+      padding: EdgeInsets.all(5.0),
+      child: Container(
+        alignment: Alignment.center,
+        width: MediaQuery.of(context).size.width,
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(color: Color(0xFFABBFBD), width: 1.5),
+          ),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text(
+              widget.title,
+              style: TextStyle(color: Color(0xFF596A68)),
+            ),
+            SizedBox(width: 10),
+            SizedBox(
+              width: 30,
+              height: 30,
+              child: Image.asset(widget.image),
+            ),
+            Spacer(),
+            CheckBoxPage(),
+            LikeCheckPage(key: widget.likeCheckKey),
+          ],
+        ),
+      ),
+    );
   }
 }
 
@@ -269,7 +309,7 @@ class _CheckBoxPageState extends State<CheckBoxPage> {
     }
 
     return Transform.scale(
-      scale: 0.8, // Điều chỉnh tỷ lệ này để thay đổi kích thước checkbox
+      scale: 0.8,
       child: Checkbox(
         checkColor: Colors.white,
         fillColor: MaterialStateProperty.resolveWith(getColor),

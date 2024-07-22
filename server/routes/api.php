@@ -19,7 +19,7 @@ use App\Http\Controllers\ItemsController;
 // Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return $request->user();
 // });
-Route::middleware('api')->group(function () {
+// Route::middleware('api')->group(function () {
 
     //Login
 Route::post('/login', [UsersController::class, 'login']);
@@ -56,7 +56,7 @@ Route::delete('closets/delete/{id}', [ClosetsController::class, 'delete']);
 Route::get('drawers', [DrawersController::class, 'index']);
 
 //[Get method] Hiển thị thông tin của drawers theo id
-Route::get('drawers/{id}', [DrawersController::class, 'get_drawers_by_id']);
+Route::get('drawers/{user_id}', [DrawersController::class, 'get_drawers_by_user_id']);
 
 //[Get method] Hiển thị thông tin của drawers theo closet_id
 Route::get('drawers/closet_id/{id}', [DrawersController::class, 'get_drawers_by_closet_id']);
@@ -82,7 +82,7 @@ Route::post('/items', [ItemsController::class, 'store']);
 Route::get('items/{user_id}/{closet_id}/{drawer_id}', [ItemsController::class, 'get_items_by_details']);
 
 //[Get method] Hiện thị thông tin items thông qua id
-Route::get('items/{id}', [ItemsController::class, 'get_items_by_id']);
+Route::get('items/{drawer_name}', [ItemsController::class, 'get_items_by_drawer_name']);
 
 //[Post method] Thêm Thông tin items mới ( Insert )
 Route::post('items/upload', [ItemsController::class, 'upload']);
@@ -95,4 +95,4 @@ Route::delete('items/delete/{id}', [ItemsController::class, 'delete']);
 
 
 //-------------------------ITEMS----------------------------
-});
+// });
