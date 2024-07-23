@@ -5,7 +5,7 @@ import 'package:xcloset/MyHomePage.dart'; // Thay thế với trang chính của
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
-import 'package:path/path.dart';
+import 'package:path/path.dart' as p; // Đặt tên bí danh cho thư viện path
 import 'package:async/async.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
@@ -48,7 +48,7 @@ class _AddItemPageState extends State<AddItemPage> {
             'image',
             stream,
             length,
-            filename: basename(_image!.path),
+            filename: p.basename(_image!.path), // Sử dụng bí danh p cho path
           );
           request.files.add(multipartFile);
         } catch (e) {
@@ -66,10 +66,10 @@ class _AddItemPageState extends State<AddItemPage> {
         print('Response body: $responseBody'); // In ra phản hồi từ server
         // Điều hướng về trang MyHomePage sau khi tải lên thành công
         Navigator.pushReplacement(
-            context as BuildContext,
-            MaterialPageRoute(
-              builder: (context) => MyHomePage(), // Thay thế với trang chính của bạn
-            ),
+          context, // Sử dụng đúng BuildContext
+          MaterialPageRoute(
+            builder: (context) => MyHomePage(), // Thay thế với trang chính của bạn
+          ),
         );
       } else {
         print('Upload failed with status code: ${response.statusCode}');

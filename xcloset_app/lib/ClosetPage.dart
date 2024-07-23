@@ -412,8 +412,9 @@ class _ClosetPageState extends State<ClosetPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
+    return Container(
+      // child: SingleChildScrollView(
+      child:Stack(
         children: [
           Positioned(
             top: 0,
@@ -432,7 +433,7 @@ class _ClosetPageState extends State<ClosetPage> {
                   borderRadius: BorderRadius.circular(5.0),
                 ),
                 child: widget.drawers.isEmpty
-                    ? Center(child: Text('No drawers available'))
+                    ? const Center(child:  Text('No drawers available'))
                     : GridView.builder(
                         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                           crossAxisCount: 2, // Đặt số cột là 2
@@ -454,19 +455,20 @@ class _ClosetPageState extends State<ClosetPage> {
               ),
             ),
           ),
-          Positioned(
+          const Positioned(
             top: 20,
             right: 10,
             child: PopupMenuExample(),
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Add your action here
-        },
-        child: const Icon(Icons.add),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     // Add your action here
+      //   },
+      //   child: const Icon(Icons.add),
+      // ),
+    // )
     );
   }
 }
