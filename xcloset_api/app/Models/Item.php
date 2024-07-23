@@ -15,16 +15,22 @@ class Item extends Model
         'item_name',
         'image',
         'drawer_name',
+        'is_exist',
         'favorite',
         'drawer_id',
         'closet_id',
     ];
+
+
+    public $incrementing = false; // Đảm bảo rằng ID không tự tăng
+    protected $keyType = 'string'; // Đảm bảo rằng ID là chuỗi
 
     // Relationship
     /*
         -Model Drawer có một khóa ngoại
         trỏ đến một bản ghi trong mô hình khác(Closet).
         -Nói cách khác, mô hình hiện tại "thuộc về" mô hình khác.
+
     */
     public function closet()
     {

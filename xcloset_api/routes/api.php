@@ -18,7 +18,7 @@ use App\Http\Controllers\ItemsController;
 
 
 
-Route::post('/items', [ItemsController::class, 'store']);
+
 
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -91,6 +91,9 @@ Route::put('items/edit/{id}', [ItemsController::class, 'edit']);
 
 //[Delete method] Xóa items theo ID
 Route::delete('items/delete/{id}', [ItemsController::class, 'delete']);
+
+Route::post('items', [ItemsController::class, 'store']);
+Route::post('items/update', [ItemsController::class, 'update']);
 
 
 //-------------------------ITEMS----------------------------

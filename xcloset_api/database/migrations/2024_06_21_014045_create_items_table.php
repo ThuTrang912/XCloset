@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->string('type', 30)->nullable();
             $table->string('drawer_name', 100)->nullable();
+            $table->boolean('is_exist')->nullable();
             $table->boolean('favorite')->nullable();
             $table->unsignedBigInteger('drawer_id')->nullable();
             $table->unsignedBigInteger('closet_id')->nullable();

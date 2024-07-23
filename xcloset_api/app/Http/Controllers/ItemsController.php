@@ -4,7 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Item;
-use Validator;
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Item;
+use Illuminate\Support\Facades\Log;
+use App\Http\Resources\ItemResource;
+
 
 class ItemsController extends Controller
 {
@@ -13,7 +19,7 @@ class ItemsController extends Controller
     {
         // Validate the request
         $request->validate([
-            'id' => 'required|integer',
+            'id' => 'required|string',
             'drawer_name' => 'required|string|max:30',
             'item_name' => 'required|string|max:100',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
@@ -43,18 +49,45 @@ class ItemsController extends Controller
         ]);
     }
 
-    //     //[GET] Hiển thị tất cả thông tin của item trong Database
-    //     public function index(){
-    //         $items = Item::all();
-    //         $data = [
-    //             'status' => 200,
-    //             'items' =>$items
+    public function update(Request $request)
+    {
+        Log::info('Received request', $request->all());
 
-    //         ];
-    //         return response()->json($data,200);
+        $id = $request->input('id');
+
+        $item = Item::find($id);
+
+        if ($item) {
+            if ($item->is_exist == 0) {
+                $item->is_exist = 1;
+                $message = "Drawer name: " . $item->drawer_name;
+            } else {
+                $item->is_exist = 0;
+                $message = "You have taken the " . $item->item_name . " out of the closet";
+            }
+            $item->save();
+        } else {
+            $message = "Please register the location in the app";
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => $message,
+        ]);
+    }
+
+        //[GET] Hiển thị tất cả thông tin của item trong Database
+        public function index(){
+            $items = Item::all();
+            $data = [
+                'status' => 200,
+                'items' => ItemResource::collection($items)
+
+            ];
+            return response()->json($data,200);
 
 
-    //     }
+        }
 
     //     //[GET] Hiển thị tất cả thông tin item thông qua details
     //     public function get_items_by_details($user_id, $closet_id, $drawer_id) {
@@ -72,23 +105,23 @@ class ItemsController extends Controller
     //         return response()->json($data, 200);
     //     }
 
-    //     //[GET] Hiển thị tất cả thông tin item theo id cụ thể
-    //     public function get_items_by_id($id) {
-    //         $items = Item::find($id);
+        //[GET] Hiển thị tất cả thông tin item theo id cụ thể
+        public function get_items_by_id($id) {
+            $item = Item::find($id);
 
-    //         if($items) {
-    //             $data = [
-    //                 'status' => 200,
-    //                 'item' => $item,
-    //             ];
-    //         } else {
-    //             $data = [
-    //                 'status' => 404,
-    //                 'message' => 'Item Not Found'
-    //             ];
-    //         }
-    //         return response()->json($data, $data['status']);
-    //     }
+            if($item) {
+                $data = [
+                    'status' => 200,
+                    'item' => $item,
+                ];
+            } else {
+                $data = [
+                    'status' => 404,
+                    'message' => 'Item Not Found'
+                ];
+            }
+            return response()->json($data, $data['status']);
+        }
 
     //     //[POST] Insert thông tin items
     //     public function upload(Request $request){
