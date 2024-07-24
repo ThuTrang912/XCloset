@@ -31,6 +31,10 @@ dependencies:
   flutter:
     sdk: flutter
   http: ^0.13.4
+<<<<<<< HEAD
+=======
+  shared_preferences: ^2.0.12
+>>>>>>> 96b1dd0616c97d2c24a32693e70c6fb00b58e413
   image_picker: ^0.8.4+4
   path: ^1.8.0
   async: ^2.8.2

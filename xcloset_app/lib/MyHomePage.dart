@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
-import 'package:flutter/widgets.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:xcloset/ClosetPage.dart';
 import 'package:xcloset/HelpPage.dart';
 import 'package:xcloset/NoticePage.dart';
@@ -15,6 +17,40 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _index = 1;
+  List<dynamic> _drawers = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserId();
+  }
+
+  Future<void> _fetchUserId() async {
+    final prefs = await SharedPreferences.getInstance();
+    final userId = prefs.getString('user_id');
+    
+    if (userId != null) {
+      _fetchDrawers(userId);
+    } else {
+      print('No user ID found');
+    }
+  }
+
+  Future<void> _fetchDrawers(String userId) async {
+    final response = await http.get(Uri.parse('http://127.0.0.1:8000/api/drawers/$userId'));
+    print('Response Status: ${response.statusCode}');
+    print('Response Body: ${response.body}');
+    
+    if (response.statusCode == 200) {
+      final jsonResponse = json.decode(response.body);
+      print('Parsed JSON: $jsonResponse');
+      setState(() {
+        _drawers = jsonResponse['drawers'];
+      });
+    } else {
+      print('Failed to load drawers');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 index: _index,
                 children: [
                   NoticePage(),
-                  ClosetPage(),
+                  ClosetPage(drawers: _drawers), // Pass the drawers data to ClosetPage
                   HelpPage(),
                 ],
               ),
@@ -52,18 +88,11 @@ class _MyHomePageState extends State<MyHomePage> {
       bottomNavigationBar: CurvedNavigationBar(
         index: _index,
         items: const <Widget>[
-          // setting notification
           Icon(
             Icons.notifications_on,
             size: 30,
             color: Colors.red,
           ),
-          // Icon(
-          //   Icons.notifications_off,
-          //   size: 30,
-          //   color: Color.fromARGB(255, 228, 112, 62),
-          // ),
-
           IconHomePage(),
           Icon(
             Icons.help,

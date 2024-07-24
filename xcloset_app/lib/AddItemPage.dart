@@ -1,4 +1,5 @@
 import 'dart:async';
+<<<<<<< HEAD
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -8,6 +9,17 @@ import 'package:path/path.dart';
 import 'package:async/async.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'constants.dart'; // Import your API constants file
+=======
+import 'dart:convert';
+import 'dart:io';
+import 'package:xcloset/MyHomePage.dart'; // Thay thế với trang chính của bạn
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
+import 'package:path/path.dart' as p; // Đặt tên bí danh cho thư viện path
+import 'package:async/async.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+>>>>>>> 96b1dd0616c97d2c24a32693e70c6fb00b58e413
 
 class AddItemPage extends StatefulWidget {
   @override
@@ -33,7 +45,11 @@ class _AddItemPageState extends State<AddItemPage> {
 
   Future<void> _submitForm() async {
     try {
+<<<<<<< HEAD
       var uri = Uri.parse('$apiBaseUrl/api/items');
+=======
+      var uri = Uri.parse('http://127.0.0.1:8000/api/items/upload'); // Địa chỉ URL đúng
+>>>>>>> 96b1dd0616c97d2c24a32693e70c6fb00b58e413
 
       var request = http.MultipartRequest("POST", uri);
       request.fields['id'] = _idController.text;
@@ -43,12 +59,20 @@ class _AddItemPageState extends State<AddItemPage> {
       if (_image != null) {
         try {
           var length = await _image!.length();
+<<<<<<< HEAD
           var stream = http.ByteStream(DelegatingStream.typed(_image!.openRead()));
+=======
+          var stream = http.ByteStream(_image!.openRead().cast());
+>>>>>>> 96b1dd0616c97d2c24a32693e70c6fb00b58e413
           var multipartFile = http.MultipartFile(
             'image',
             stream,
             length,
+<<<<<<< HEAD
             filename: basename(_image!.path),
+=======
+            filename: p.basename(_image!.path), // Sử dụng bí danh p cho path
+>>>>>>> 96b1dd0616c97d2c24a32693e70c6fb00b58e413
           );
           request.files.add(multipartFile);
         } catch (e) {
@@ -58,10 +82,31 @@ class _AddItemPageState extends State<AddItemPage> {
 
       var response = await request.send();
 
+<<<<<<< HEAD
       if (response.statusCode == 200) {
         print('Uploaded!');
       } else {
         print('Upload failed with status code: ${response.statusCode}');
+=======
+      // Đọc phản hồi từ server
+      final responseBody = await response.stream.bytesToString();
+
+      if (response.statusCode == 201) {
+        print('Uploaded successfully!');
+        print('Response body: $responseBody'); // In ra phản hồi từ server
+        // Điều hướng về trang MyHomePage sau khi tải lên thành công
+        Navigator.pushReplacement(
+          context, // Sử dụng đúng BuildContext
+          MaterialPageRoute(
+            builder: (context) => MyHomePage(), // Thay thế với trang chính của bạn
+          ),
+        );
+      } else {
+        print('Upload failed with status code: ${response.statusCode}');
+        response.stream.transform(utf8.decoder).listen((value) {
+          print(value);
+        });
+>>>>>>> 96b1dd0616c97d2c24a32693e70c6fb00b58e413
       }
     } catch (e) {
       print('Error during form submission: $e');
@@ -71,11 +116,19 @@ class _AddItemPageState extends State<AddItemPage> {
   Widget _buildImageWidget() {
     if (kIsWeb) {
       return _image != null
+<<<<<<< HEAD
           ? Image.network(_image!.path) // Show selected image on web
           : Image.asset('images/logo.png'); // Show placeholder image on web
     } else {
       return _image != null
           ? Image.file(_image!) // Show selected image on mobile
+=======
+          ? Image.network(_image!.path) // Hiển thị hình ảnh trên web
+          : Image.asset('images/logo.png'); // Hiển thị hình ảnh mặc định trên web
+    } else {
+      return _image != null
+          ? Image.file(_image!) // Hiển thị hình ảnh trên mobile
+>>>>>>> 96b1dd0616c97d2c24a32693e70c6fb00b58e413
           : Text('No image selected.');
     }
   }
@@ -86,6 +139,7 @@ class _AddItemPageState extends State<AddItemPage> {
       appBar: AppBar(
         title: Text('Item Input'),
       ),
+<<<<<<< HEAD
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -115,6 +169,39 @@ class _AddItemPageState extends State<AddItemPage> {
               child: Text('Submit'),
             ),
           ],
+=======
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              TextField(
+                controller: _idController,
+                decoration: InputDecoration(labelText: 'ID'),
+                keyboardType: TextInputType.text,
+              ),
+              TextField(
+                controller: _drawerNameController,
+                decoration: InputDecoration(labelText: 'Drawer Name'),
+              ),
+              TextField(
+                controller: _itemNameController,
+                decoration: InputDecoration(labelText: 'Item Name'),
+              ),
+              SizedBox(height: 20),
+              _buildImageWidget(),
+              ElevatedButton(
+                onPressed: _pickImage,
+                child: Text('Capture Image'),
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: _submitForm,
+                child: Text('Submit'),
+              ),
+            ],
+          ),
+>>>>>>> 96b1dd0616c97d2c24a32693e70c6fb00b58e413
         ),
       ),
     );
