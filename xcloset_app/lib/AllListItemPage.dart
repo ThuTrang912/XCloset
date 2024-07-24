@@ -8,8 +8,9 @@ class Item {
   final String itemName;
   final String image;
   final String type;
+  final int isExist;
 
-  Item({required this.id, required this.itemName, required this.image, required this.type});
+  Item({required this.id, required this.itemName, required this.image, required this.type, required this.isExist});
 
   factory Item.fromJson(Map<String, dynamic> json) {
     return Item(
@@ -17,6 +18,7 @@ class Item {
       itemName: json['item_name'] ?? 'Unknown',
       image: 'images/clothes/tshirt.png',
       type: json['type'] ?? 'Unknown',
+      isExist: json['is_exist'] ?? 0, // Add this line to parse is_exist
     );
   }
 }
@@ -87,6 +89,7 @@ class _AllListItemPageState extends State<AllListItemPage> {
       title: item.itemName,
       image: item.image,
       type: item.type,
+      isExist: item.isExist, // Pass isExist to ItemWidget
     )).toList();
   }
 
@@ -240,9 +243,10 @@ class ItemWidget extends StatefulWidget {
   final String title;
   final String image;
   final String type;
+  final int isExist; // Add this field
   final GlobalKey<_LikeCheckPageState> likeCheckKey = GlobalKey<_LikeCheckPageState>();
 
-  ItemWidget({required this.id, required this.title, required this.image, required this.type});
+  ItemWidget({required this.id, required this.title, required this.image, required this.type, required this.isExist});
 
   @override
   _ItemWidgetState createState() => _ItemWidgetState();
@@ -269,18 +273,18 @@ class _ItemWidgetState extends State<ItemWidget> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              widget.title,
-              style: TextStyle(color: Color(0xFF596A68)),
-            ),
-            SizedBox(width: 10),
             SizedBox(
               width: 30,
               height: 30,
               child: Image.asset(widget.image),
             ),
+            SizedBox(width: 10),
+            Text(
+              widget.title,
+              style: TextStyle(color: Color(0xFF596A68)),
+            ),
             Spacer(),
-            CheckBoxPage(),
+            CheckBoxPage(isExist: widget.isExist), // Pass isExist to CheckBoxPage
             LikeCheckPage(key: widget.likeCheckKey),
           ],
         ),
@@ -290,14 +294,22 @@ class _ItemWidgetState extends State<ItemWidget> {
 }
 
 class CheckBoxPage extends StatefulWidget {
-  const CheckBoxPage({Key? key}) : super(key: key);
+  final int isExist; // Add this field to accept isExist
+
+  const CheckBoxPage({Key? key, required this.isExist}) : super(key: key);
 
   @override
   _CheckBoxPageState createState() => _CheckBoxPageState();
 }
 
 class _CheckBoxPageState extends State<CheckBoxPage> {
-  bool isChecked = false;
+  late bool isChecked;
+
+  @override
+  void initState() {
+    super.initState();
+    isChecked = widget.isExist == 1; // Set initial state based on isExist
+  }
 
   @override
   Widget build(BuildContext context) {

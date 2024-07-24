@@ -76,10 +76,10 @@ Route::delete('drawers/delete/{id}', [DrawersController::class, 'delete']);
 //[Get method] Hiện thị tất cả thông tin của items có trong database
 Route::get('items', [ItemsController::class, 'index']);
 
-Route::post('/items', [ItemsController::class, 'store']);
+//Route::post('/items', [ItemsController::class, 'store']);
 
 //[Get method] Hiện thị thông tin items thông qua details
-Route::get('items/{user_id}/{closet_id}/{drawer_id}', [ItemsController::class, 'get_items_by_details']);
+//Route::get('items/{user_id}/{closet_id}/{drawer_id}', [ItemsController::class, 'get_items_by_details']);
 
 //[Get method] Hiện thị thông tin items thông qua id
 Route::get('items/{drawer_name}', [ItemsController::class, 'get_items_by_drawer_name']);
@@ -92,6 +92,9 @@ Route::put('items/edit/{id}', [ItemsController::class, 'edit']);
 
 //[Delete method] Xóa items theo ID
 Route::delete('items/delete/{id}', [ItemsController::class, 'delete']);
+
+Route::post('items/update', [ItemsController::class, 'update']);
+
 
 
 //-------------------------ITEMS----------------------------

@@ -15,6 +15,7 @@ class Item extends Model
         'item_name',
         'image',
         'drawer_name',
+        'is_exist',
         'favorite',
     ];
     public $incrementing = false; // Tắt chế độ tự tăng

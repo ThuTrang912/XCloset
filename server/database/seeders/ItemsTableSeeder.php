@@ -40,70 +40,99 @@ class ItemsTableSeeder extends Seeder
         DB::table('items')->insert([
             [
                 'id' => '6744A15C', // ID là chuỗi cụ thể
-                'item_name' => '111',
+                'item_name' => 'Black T-shirt',
                 'image' => 'images/example.jpg',
                 'type' => 'ao',
-                'drawer_name' => 'Drawer1',
+                'drawer_name' => 'Shirt',
+                'is_exist' => 0,
+                'favorite' => 0,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => 'E745815B', // ID là chuỗi cụ thể
+                'item_name' => 'Pink T-shirt',
+                'image' => 'images/example.jpg',
+                'type' => 'ao',
+                'drawer_name' => 'Shirt',
+                'is_exist' => 0,
+                'favorite' => 0,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => 'F712B85B', // ID là chuỗi cụ thể
+                'item_name' => 'Polo Shirt',
+                'image' => 'images/example.jpg',
+                'type' => 'ao',
+                'drawer_name' => 'Shirt',
+                'is_exist' => 0,
+                'favorite' => 0,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => '47E88F5C', // ID là chuỗi cụ thể
+                'item_name' => 'Tank Top',
+                'image' => 'images/example.jpg',
+                'type' => 'ao',
+                'drawer_name' => 'Shirt',
+                'is_exist' => 0,
+                'favorite' => 0,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => '57628D5C', // ID là chuỗi cụ thể
+                'item_name' => 'Baseball Tee',
+                'image' => 'images/example.jpg',
+                'type' => 'ao',
+                'drawer_name' => 'Shirt',
+                'is_exist' => 0,
+                'favorite' => 0,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => '176F5D5C', // ID là chuỗi cụ thể
+                'item_name' => 'V-Neck T-Shirt',
+                'image' => 'images/example.jpg',
+                'type' => 'ao',
+                'drawer_name' => 'Shirt',
+                'is_exist' => 0,
+                'favorite' => 0,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => '278D115C', // ID là chuỗi cụ thể
+                'item_name' => 'Graphic Tee',
+                'image' => 'images/example.jpg',
+                'type' => 'ao',
+                'drawer_name' => 'Shirt',
+                'is_exist' => 0,
+                'favorite' => 0,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'id' => '578DAC5C', // ID là chuỗi cụ thể
+                'item_name' => 'Henley Shirt',
+                'image' => 'images/example.jpg',
+                'type' => 'ao',
+                'drawer_name' => 'Shirt',
+                'is_exist' => 0,
                 'favorite' => 0,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
             [
                 'id' => '6744A15A', // ID là chuỗi cụ thể
-                'item_name' => '112',
+                'item_name' => 'Button-Down Shirt',
                 'image' => 'images/example.jpg',
                 'type' => 'ao',
-                'drawer_name' => 'Drawer1',
-                'favorite' => 0,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id' => '6744A15B', // ID là chuỗi cụ thể
-                'item_name' => '221',
-                'image' => 'images/example.jpg',
-                'type' => 'ao',
-                'drawer_name' => 'Drawer2',
-                'favorite' => 0,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id' => '6744A15D', // ID là chuỗi cụ thể
-                'item_name' => '222',
-                'image' => 'images/example.jpg',
-                'type' => 'ao',
-                'drawer_name' => 'Drawer2',
-                'favorite' => 0,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id' => '6744A15E', // ID là chuỗi cụ thể
-                'item_name' => '33',
-                'image' => 'images/example.jpg',
-                'type' => 'ao',
-                'drawer_name' => 'Drawer3',
-                'favorite' => 0,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id' => '6744A15F', // ID là chuỗi cụ thể
-                'item_name' => '44',
-                'image' => 'images/example.jpg',
-                'type' => 'ao',
-                'drawer_name' => 'Drawer4',
-                'favorite' => 0,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ],
-            [
-                'id' => '6744A15G', // ID là chuỗi cụ thể
-                'item_name' => '55',
-                'image' => 'images/example.jpg',
-                'type' => 'ao',
-                'drawer_name' => 'Drawer5',
+                'drawer_name' => 'Shirt',
+                'is_exist' => 0,
                 'favorite' => 0,
                 'created_at' => now(),
                 'updated_at' => now(),

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Item;
 use Validator;
+use Illuminate\Support\Facades\Log;
 
 class ItemsController extends Controller
 {
@@ -52,6 +53,33 @@ class ItemsController extends Controller
         return response()->json($data,200);
 
 
+    }
+
+    public function update(Request $request)
+    {
+        Log::info('Received request', $request->all());
+
+        $id = $request->input('id');
+
+        $item = Item::find($id);
+
+        if ($item) {
+            if ($item->is_exist == 0) {
+                $item->is_exist = 1;
+                $message = "You should put \" " . $item->item_name . " \" in \" " . $item->drawer_name . " \" drawer";
+            } else {
+                $item->is_exist = 0;
+                $message = "You have taken the \" " . $item->item_name . " \" out of the closet";
+            }
+            $item->save();
+        } else {
+            $message = "Please register the location in the app";
+        }
+
+        return response()->json([
+            'success' => true,
+            'message' => $message,
+        ]);
     }
 
     //[GET] Hiển thị tất cả thông tin item thông qua details

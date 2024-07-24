@@ -17,8 +17,8 @@ class Drawer extends Model
      * @var array
      */
     protected $fillable = [
-        'closet_id',
         'drawer_name',
+        'user_id',
     ];
 
 
