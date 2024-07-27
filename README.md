@@ -33,5 +33,9 @@ The IoT part of the project uses the M5 Stack Core 2, an IoT development board. 
 ## Deployment
 After running the project smoothly on a personal server, it will be deployed to a server using Docker and AWS. The deployment process will be updated in the future.
 
+## Demo
+
+https://github.com/user-attachments/assets/6a51689c-8e1a-4599-9143-268925e28f46
+
 ## Updates
 The project will be updated and further developed in the future.
