@@ -30,12 +30,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  http: ^0.13.4
-<<<<<<< HEAD
-=======
+  http: ^1.2.2
   shared_preferences: ^2.0.12
->>>>>>> 96b1dd0616c97d2c24a32693e70c6fb00b58e413
-  image_picker: ^0.8.4+4
+  image_picker: ^1.1.2
   path: ^1.8.0
   async: ^2.8.2
   universal_io: ^2.0.4
@@ -48,17 +45,16 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-
-
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^3.0.0
+  flutter_lints: ^4.0.0
   ultimate_bottom_navbar: ^0.0.7
   curved_navigation_bar: ^1.0.6
   standard_searchbar: ^2.1.1
+
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -74,7 +70,7 @@ flutter:
     - images/
     - images/clothes/
     # - assets/images/
-  #   - images/a_dot_ham.jpeg
+    # - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
@@ -88,11 +84,6 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    #   - family: Schyler
-    #     fonts:
-    #       - asset: fonts/Schyler-Regular.ttf
-    #       - asset: fonts/Schyler-Italic.ttf
-    #         style: italic
     - family: Philosopher
       fonts:
         - asset: fonts/Philosopher-Regular.ttf
